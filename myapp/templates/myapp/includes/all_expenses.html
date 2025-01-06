@@ -1,0 +1,19 @@
+<table class="table-fixed m-10 shadow-lg rounded-lg">
+    <thead>
+        <tr>
+            <th class="w-1/2 px-4 py-2">Expense Name</th>
+            <th class="w-1/4 px-4 py-2">Amount</th>
+            <th class="w-1/4 px-4 py-2">Category</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for expense in all_expenses %}
+            <tr>
+                <td class="border px-4 py-2">{{ expense.name }}</td>
+                <td class="border px-4 py-2">{{ expense.amount }}</td>
+                <td class="border px-4 py-2">{{ expense.category }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
