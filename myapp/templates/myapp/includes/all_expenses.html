@@ -21,7 +21,7 @@
                     <a class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-5 rounded" href="{% url 'edit' expense.id %}">Edit</a>
                 </td>
                 <td class="border px-4 py-2">
-                    <a class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-5 rounded" href="delete/{{ expense.id }}">Delete</a>
+                    <a class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-5 rounded" href="{% url 'delete' expense.id %}">Delete</a>
                 </td>
             </tr>
         {% endfor %}

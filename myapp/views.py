@@ -42,3 +42,9 @@ def edit_expense(request, expense_id):
     }
 
     return render(request, "myapp/edit_expense.html", context)
+
+
+def delete_expense(request, expense_id):
+    current_expense = get_object_or_404(Expense, id=expense_id)
+    current_expense.delete()
+    return redirect("index")
