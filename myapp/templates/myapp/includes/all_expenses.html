@@ -14,8 +14,8 @@
         {% for expense in all_expenses %}
             <tr>
                 <td class="border px-4 py-2">{{ expense.name }}</td>
-                <td class="border px-4 py-2">{{ expense.amount }}</td>
-                <td class="border px-4 py-2">{{ expense.created }}</td>
+                <td class="border px-4 py-2 text-right">$ {{ expense.amount|floatformat:2 }}</td>
+                <td class="border px-4 py-2 text-center">{{ expense.created }}</td>
                 <td class="border px-4 py-2">{{ expense.category }}</td>
                 <td class="border px-4 py-2">
                     <a class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-5 rounded" href="{% url 'edit' expense.id %}">Edit</a>
