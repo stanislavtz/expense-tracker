@@ -3,10 +3,14 @@
 {% block title %}Index Page{% endblock %}
 
 {% block body %}
-    <h1>This is index template page</h1>
-
-    {% include "myapp/includes/expense_form.html" %}
-
-    {% include "myapp/includes/all_expenses.html" %}
+    <div class="m-10">
+        <h1 class="font-bold text-2xl">Create Expense</h1>
+        {% include "myapp/includes/create_expense.html" %}
+    </div>
+    <hr>
+    <div class="m-10">
+        <h1 class="font-bold text-2xl">All Expenses</h1>
+        {% include "myapp/includes/all_expenses.html" %}
+    </div>
 
 {% endblock %}
