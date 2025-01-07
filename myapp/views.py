@@ -38,6 +38,7 @@ def edit_expense(request, expense_id):
     context = {
         "expense": current_expense,
         "form": edit_form,
+        "is_edit_form": True,
     }
 
     return render(request, "myapp/edit_expense.html", context)
