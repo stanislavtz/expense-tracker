@@ -10,6 +10,14 @@
     <title>{% block title %}Document{% endblock %}</title>
 </head>
 <body>
+    <nav class="shadow-lg rounded-lg">
+        <div class="p-10 flex flex-wrap justify-between items-center mx-auto">
+            <a class="flex" href="{% url 'index' %}">
+                <img class="h-20 mr-10" src="{% static 'myapp/images/wallet.png' %}" alt="Logo">
+                <h1 class="self-center text-3xl font-bold">Expenses Tracker</h1>
+            </a>
+        </div>
+    </nav>
     {% block body %}{% endblock %}
 </body>
 </html>
