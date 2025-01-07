@@ -16,9 +16,12 @@ def index(request):
         
     all_expenses = get_list_or_404(Expense)
 
+    total_expenses = sum(e.amount for e in all_expenses)
+
     context = {
         "form": form,
         "all_expenses": all_expenses,
+        "sum": total_expenses
     }
 
     return render(request, "myapp/index.html", context)
