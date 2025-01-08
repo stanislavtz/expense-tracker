@@ -1,7 +1,12 @@
+import datetime
+
 from django.shortcuts import render, redirect
 from django.shortcuts import get_list_or_404, get_object_or_404
+from django.db.models import Sum
+
 from .forms import ExpenseForm
 from .models import Expense
+
 
 # Create your views here.
 def index(request):
@@ -16,12 +21,30 @@ def index(request):
         
     all_expenses = get_list_or_404(Expense)
 
-    total_expenses = sum(e.amount for e in all_expenses)
+    total_expenses = Expense.objects.all().aggregate(Sum("amount"))
+
+    # Calculates last 365 days expenses total amount
+    last_year = datetime.date.today() - datetime.timedelta(days=365)
+    last_year_query= Expense.objects.filter(created__gt=last_year)
+    yearly_total = last_year_query.aggregate(Sum("amount"))
+
+    # Calculates last 30 days expenses total amount
+    last_month = datetime.date.today() - datetime.timedelta(days=30)
+    last_month_query = Expense.objects.filter(created__gt=last_month)
+    monthly_total = last_month_query.aggregate(Sum("amount"))
+
+    # Calculates last 7 days expenses total amount
+    last_week = datetime.date.today() - datetime.timedelta(weeks=1)
+    last_week_query = Expense.objects.filter(created__gt=last_week)
+    weekly_total = last_week_query.aggregate(Sum("amount"))
 
     context = {
         "form": form,
         "all_expenses": all_expenses,
-        "sum": total_expenses
+        "total": total_expenses,
+        "yearly_total": yearly_total,
+        "monthly_total": monthly_total,
+        "weekly_total": weekly_total
     }
 
     return render(request, "myapp/index.html", context)
