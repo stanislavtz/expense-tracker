@@ -1,0 +1,21 @@
+<div class="w-1/2 shadow-lg rounded-lg px-10 py-5">
+    <h1 class="text-xl font-semibold py-2 px-4">Daily Expenses</h1>
+    <hr>
+    <table class="table-auto bordered-1">
+        <thead>
+            <tr>
+                <th class="w-1/2 py-2 px-20 border-b">Data</th>
+                <th class="w-1/2 py-2 px-20 border-b">Amount</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for daily_expense in daily_expenses %}
+                <tr>
+                    <td class="text-center border-b">{{ daily_expense.created }}</td>
+                    <td class="text-center border-b">$ {{ daily_expense.sum|floatformat:2 }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

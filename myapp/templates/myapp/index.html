@@ -17,7 +17,7 @@
 
     <hr class="mx-10">
 
-    <div class="my-10 mx-10 px-10 flex justify-end">
+    <div class="m-10 px-10 flex justify-end">
         <h1 class="font-semibold mr-5 text-xl">Total Amount:</h1>
         <span class="self-center text-xl text-blue-700 font-semibold">$ {{ total.amount__sum|floatformat:2 }}</span>
     </div>
@@ -34,11 +34,18 @@
             <h1 class="font-semibold text-xl text-gray-500">Last 30 Days Amount:</h1>
             <p class="text-blue-700 text-2xl font-semibold">$ {{ monthly_total.amount__sum|floatformat:2 }}</p>
         </div>
-        
+
         <div class="shadow-lg rounded-lg w-1/3 p-5 text-center">
             <h1 class="font-semibold text-xl text-gray-500">Last 7 Days Amount:</h1>
             <p class="text-blue-700 text-2xl font-semibold">$ {{ weekly_total.amount__sum|floatformat:2 }}</p>
         </div>
+    </div>
+
+    <hr class="mx-10">
+
+    <div class="flex m-10 mb-20 justify-between gap-10">
+        {% include "myapp/includes/expenses_by_date.html" %}
+        {% include "myapp/includes/expenses_by_category.html" %}
     </div>
 
 {% endblock %}

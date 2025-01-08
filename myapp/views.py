@@ -38,13 +38,21 @@ def index(request):
     last_week_query = Expense.objects.filter(created__gt=last_week)
     weekly_total = last_week_query.aggregate(Sum("amount"))
 
+    #Calculates total daily expenses
+    daily_expenses = Expense.objects.values("created").order_by("created").annotate(sum=Sum("amount"))
+
+    #Calculates total expenses per category
+    category_expenses = Expense.objects.values("category").order_by("category").annotate(sum=Sum("amount"))
+
     context = {
         "form": form,
         "all_expenses": all_expenses,
         "total": total_expenses,
         "yearly_total": yearly_total,
         "monthly_total": monthly_total,
-        "weekly_total": weekly_total
+        "weekly_total": weekly_total,
+        "daily_expenses": daily_expenses,
+        "category_expenses": category_expenses
     }
 
     return render(request, "myapp/index.html", context)
