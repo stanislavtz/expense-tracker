@@ -18,11 +18,11 @@
             </a>
             <div>
                 {% if user.is_authenticated %}
-                    <span>Welcome {{ user.first_name|capfirst }}</span>
-                    <a href="#">Logout</a>
+                    <span class="text-lg font-semibold mr-5">Welcome {{ user.first_name|capfirst }}</span>
+                    <a href="{% url 'logout' %}" class="text-lg font-semibold">Logout</a>
                 {% else %}
-                    <a href="{% url 'login' %}">Login</a>
-                    <a href="{% url 'register' %}">Register</a>
+                    <a href="{% url 'login' %}" class="text-lg font-semibold mr-5">Login</a>
+                    <a href="{% url 'register' %}" class="text-lg font-semibold">Register</a>
                 {% endif %}
             </div>
         </div>
