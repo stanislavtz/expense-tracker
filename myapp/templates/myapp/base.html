@@ -16,6 +16,15 @@
                 <img class="h-20 mr-10" src="{% static 'myapp/images/wallet.png' %}" alt="Logo">
                 <h1 class="self-center text-3xl font-bold">Expenses Tracker</h1>
             </a>
+            <div>
+                {% if user.is_authenticated %}
+                    <span>Welcome {{ user.first_name|capfirst }}</span>
+                    <a href="#">Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}">Login</a>
+                    <a href="{% url 'register' %}">Register</a>
+                {% endif %}
+            </div>
         </div>
     </nav>
     {% block body %}{% endblock %}
