@@ -7,6 +7,9 @@ from .forms import LoginForm, RegisterForm
 
 # Create your views here.
 def register(request):
+    if request.user.is_authenticated:
+        return redirect("index")
+    
     reg_form = RegisterForm()
     message = None
 
@@ -44,11 +47,11 @@ def register(request):
 
 
 def login_user(request):
-    login_form = LoginForm()
-    message = None
-
     if request.user.is_authenticated:
         return redirect("index")
+
+    login_form = LoginForm()
+    message = None
 
     if request.method == "POST":
         login_form = LoginForm(request.POST)
