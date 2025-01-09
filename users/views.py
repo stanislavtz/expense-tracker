@@ -27,14 +27,14 @@ def register(request):
                     last_name=last_name,
                     password=password
                 )
-
+                
                 return redirect("index")
         else:
             message = "Please fill all input fields with valid data."
-            
-        context = {
-            "form": reg_form,
-            "message": message
-        }
+           
+    context = {
+        "form": reg_form,
+        "message": message
+    }
 
     return render(request, "users/register.html", context)
