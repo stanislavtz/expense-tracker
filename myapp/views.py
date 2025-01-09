@@ -10,52 +10,65 @@ from .models import Expense
 
 # Create your views here.
 def index(request):
+    all_expenses = []
+    total_expenses = 0
     form = ExpenseForm()
 
-    if request.method == "POST":
-        form = ExpenseForm(request.POST)
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            form = ExpenseForm(request.POST)
 
-        if form.is_valid():
-            form.save()
-            return redirect("index")
+            if form.is_valid():
+                print("form is valid")   
+                expense = form.save(commit=False)
+                expense.user = request.user
+                expense.save()
+                return redirect("index")
+            else:
+                print("not valid")
         
-    all_expenses = get_list_or_404(Expense)
+        if request.user and request.user.username == "admin":
+            all_expenses = Expense.objects.all()
+            total_expenses = all_expenses.aggregate(Sum("amount"))
+        else:
+            all_expenses = Expense.objects.filter(user=request.user)
+            total_expenses = all_expenses.aggregate(Sum("amount"))
 
-    total_expenses = Expense.objects.all().aggregate(Sum("amount"))
+        # Calculates last 365 days expenses total amount
+        last_year = datetime.date.today() - datetime.timedelta(days=365)
+        last_year_query= all_expenses.filter(created__gt=last_year)
+        yearly_total = last_year_query.aggregate(Sum("amount"))
 
-    # Calculates last 365 days expenses total amount
-    last_year = datetime.date.today() - datetime.timedelta(days=365)
-    last_year_query= Expense.objects.filter(created__gt=last_year)
-    yearly_total = last_year_query.aggregate(Sum("amount"))
+        # Calculates last 30 days expenses total amount
+        last_month = datetime.date.today() - datetime.timedelta(days=30)
+        last_month_query = all_expenses.filter(created__gt=last_month)
+        monthly_total = last_month_query.aggregate(Sum("amount"))
 
-    # Calculates last 30 days expenses total amount
-    last_month = datetime.date.today() - datetime.timedelta(days=30)
-    last_month_query = Expense.objects.filter(created__gt=last_month)
-    monthly_total = last_month_query.aggregate(Sum("amount"))
+        # Calculates last 7 days expenses total amount
+        last_week = datetime.date.today() - datetime.timedelta(weeks=1)
+        last_week_query = all_expenses.filter(created__gt=last_week)
+        weekly_total = last_week_query.aggregate(Sum("amount"))
 
-    # Calculates last 7 days expenses total amount
-    last_week = datetime.date.today() - datetime.timedelta(weeks=1)
-    last_week_query = Expense.objects.filter(created__gt=last_week)
-    weekly_total = last_week_query.aggregate(Sum("amount"))
+        #Calculates total daily expenses
+        daily_expenses = all_expenses.values("created").order_by("created").annotate(sum=Sum("amount"))
 
-    #Calculates total daily expenses
-    daily_expenses = Expense.objects.values("created").order_by("created").annotate(sum=Sum("amount"))
+        #Calculates total expenses per category
+        category_expenses = all_expenses.values("category").order_by("category").annotate(sum=Sum("amount"))
 
-    #Calculates total expenses per category
-    category_expenses = Expense.objects.values("category").order_by("category").annotate(sum=Sum("amount"))
+        context = {
+            "form": form,
+            "all_expenses": all_expenses,
+            "total": total_expenses,
+            "yearly_total": yearly_total,
+            "monthly_total": monthly_total,
+            "weekly_total": weekly_total,
+            "daily_expenses": daily_expenses,
+            "category_expenses": category_expenses
+        }
 
-    context = {
-        "form": form,
-        "all_expenses": all_expenses,
-        "total": total_expenses,
-        "yearly_total": yearly_total,
-        "monthly_total": monthly_total,
-        "weekly_total": weekly_total,
-        "daily_expenses": daily_expenses,
-        "category_expenses": category_expenses
-    }
-
-    return render(request, "myapp/index.html", context)
+        return render(request, "myapp/index.html", context)
+    else:
+        return render(request, "myapp/index.html")
 
 
 def edit_expense(request, expense_id):
