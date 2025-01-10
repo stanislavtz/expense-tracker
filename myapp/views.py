@@ -1,8 +1,9 @@
 import datetime
 
 from django.shortcuts import render, redirect
-from django.shortcuts import get_list_or_404, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.db.models import Sum
+from django.contrib.auth.decorators import login_required
 
 from .forms import ExpenseForm
 from .models import Expense
@@ -71,6 +72,7 @@ def index(request):
         return render(request, "myapp/index.html")
 
 
+@login_required
 def edit_expense(request, expense_id):
     current_expense = get_object_or_404(Expense, id=expense_id)
     edit_form = ExpenseForm(instance=current_expense)
@@ -91,6 +93,7 @@ def edit_expense(request, expense_id):
     return render(request, "myapp/edit_expense.html", context)
 
 
+@login_required
 def delete_expense(request, expense_id):
     current_expense = get_object_or_404(Expense, id=expense_id)
     current_expense.delete()
